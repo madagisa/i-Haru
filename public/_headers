@@ -1,0 +1,2 @@
+/* SPA Routing for Cloudflare Pages */
+/* Redirect all routes to index.html for client-side routing */

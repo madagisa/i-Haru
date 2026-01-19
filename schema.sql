@@ -1,0 +1,88 @@
+-- i-Haru Database Schema for Cloudflare D1
+
+-- Users table
+CREATE TABLE IF NOT EXISTS users (
+  id TEXT PRIMARY KEY,
+  email TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  name TEXT NOT NULL,
+  role TEXT CHECK(role IN ('parent', 'child')) NOT NULL,
+  family_id TEXT,
+  color TEXT DEFAULT '#4A90E2',
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Families table
+CREATE TABLE IF NOT EXISTS families (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  invite_code TEXT UNIQUE NOT NULL,
+  created_by TEXT REFERENCES users(id),
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Schedules table
+CREATE TABLE IF NOT EXISTS schedules (
+  id TEXT PRIMARY KEY,
+  family_id TEXT REFERENCES families(id),
+  child_id TEXT REFERENCES users(id),
+  title TEXT NOT NULL,
+  description TEXT,
+  category TEXT DEFAULT 'general',
+  start_date DATE NOT NULL,
+  start_time TIME,
+  end_time TIME,
+  is_all_day BOOLEAN DEFAULT FALSE,
+  color TEXT,
+  created_by TEXT REFERENCES users(id),
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Recurrences table
+CREATE TABLE IF NOT EXISTS recurrences (
+  id TEXT PRIMARY KEY,
+  schedule_id TEXT REFERENCES schedules(id) ON DELETE CASCADE,
+  frequency TEXT CHECK(frequency IN ('daily', 'weekly', 'monthly')) NOT NULL,
+  days_of_week TEXT,
+  end_date DATE,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Preparations table
+CREATE TABLE IF NOT EXISTS preparations (
+  id TEXT PRIMARY KEY,
+  family_id TEXT REFERENCES families(id),
+  child_id TEXT REFERENCES users(id),
+  title TEXT NOT NULL,
+  description TEXT,
+  category TEXT DEFAULT 'general',
+  due_date DATE NOT NULL,
+  is_completed BOOLEAN DEFAULT FALSE,
+  created_by TEXT REFERENCES users(id),
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Messages table
+CREATE TABLE IF NOT EXISTS messages (
+  id TEXT PRIMARY KEY,
+  family_id TEXT REFERENCES families(id),
+  from_user_id TEXT REFERENCES users(id),
+  to_user_id TEXT REFERENCES users(id),
+  content TEXT NOT NULL,
+  is_read BOOLEAN DEFAULT FALSE,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Indexes for better query performance
+CREATE INDEX IF NOT EXISTS idx_users_family ON users(family_id);
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_schedules_family ON schedules(family_id);
+CREATE INDEX IF NOT EXISTS idx_schedules_child ON schedules(child_id);
+CREATE INDEX IF NOT EXISTS idx_schedules_date ON schedules(start_date);
+CREATE INDEX IF NOT EXISTS idx_preparations_family ON preparations(family_id);
+CREATE INDEX IF NOT EXISTS idx_preparations_child ON preparations(child_id);
+CREATE INDEX IF NOT EXISTS idx_preparations_due ON preparations(due_date);
+CREATE INDEX IF NOT EXISTS idx_messages_family ON messages(family_id);

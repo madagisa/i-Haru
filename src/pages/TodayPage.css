@@ -1,0 +1,306 @@
+.today-page {
+    padding: var(--space-md);
+    padding-bottom: var(--space-xl);
+}
+
+/* Hero Section */
+.today-hero {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+    color: var(--text-inverse);
+}
+
+.hero-greeting {
+    font-size: var(--font-size-md);
+    opacity: 0.9;
+    margin-bottom: var(--space-xs);
+}
+
+.hero-date {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    margin-bottom: var(--space-md);
+}
+
+.hero-summary {
+    display: flex;
+    gap: var(--space-md);
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--font-size-sm);
+    opacity: 0.9;
+}
+
+/* Section Styles */
+.today-section {
+    margin-bottom: var(--space-lg);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-sm);
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.section-link {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: var(--font-size-sm);
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.empty-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    text-align: center;
+    color: var(--text-tertiary);
+}
+
+/* Schedule Cards */
+.schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.schedule-card {
+    display: flex;
+    gap: var(--space-md);
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    border-left: 4px solid var(--schedule-color);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-fast);
+}
+
+.schedule-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateX(4px);
+}
+
+.schedule-time {
+    min-width: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.time-start {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.time-end {
+    font-size: var(--font-size-xs);
+}
+
+.all-day-badge {
+    background: var(--bg-tertiary);
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+}
+
+.schedule-info {
+    flex: 1;
+}
+
+.schedule-title {
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.schedule-desc {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xs);
+}
+
+.schedule-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.child-tag {
+    display: inline-flex;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--text-inverse);
+}
+
+.child-tag.small {
+    padding: 1px 6px;
+    font-size: 10px;
+}
+
+/* Prep Cards */
+.prep-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.prep-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-fast);
+}
+
+.prep-card.urgent {
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.05), rgba(255, 107, 107, 0.1));
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.prep-check {
+    flex-shrink: 0;
+    padding: 4px;
+}
+
+.check-empty {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--text-tertiary);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+}
+
+.prep-check:hover .check-empty {
+    border-color: var(--color-primary);
+}
+
+.check-done {
+    color: var(--color-success);
+}
+
+.prep-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.prep-title {
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.prep-desc {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.prep-dday {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.prep-dday.urgent {
+    background: var(--color-primary);
+    color: var(--text-inverse);
+    animation: pulse 2s infinite;
+}
+
+/* Message Cards */
+.message-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.message-card {
+    display: flex;
+    gap: var(--space-sm);
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-inverse);
+    font-weight: 700;
+    font-size: var(--font-size-md);
+    flex-shrink: 0;
+}
+
+.message-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.message-sender {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: var(--font-size-sm);
+}
+
+.message-time {
+    font-size: var(--font-size-xs);
+    color: var(--text-tertiary);
+}
+
+.message-text {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
