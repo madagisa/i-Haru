@@ -9,7 +9,7 @@ name = "i-haru"
 # D1 Database binding
 [[d1_databases]]
 binding = "DB"
-database_name = "iharu-db"
+database_name = "i-haru-db"
 database_id = "YOUR_DATABASE_ID_HERE"  # Replace with actual ID after creating DB
 
 # Pages configuration
