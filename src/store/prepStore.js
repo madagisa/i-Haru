@@ -188,5 +188,25 @@ export const usePrepStore = create((set, get) => ({
         const due = parseISO(dueDate);
         due.setHours(0, 0, 0, 0);
         return due < today;
+    },
+
+    getPendingPreparations: (options = {}) => {
+        const { childId, limit } = options;
+        const { preparations } = get();
+
+        let result = preparations.filter(p => {
+            if (p.isCompleted) return false;
+            if (childId && p.childId !== childId) return false;
+            return true;
+        });
+
+        // Sort by due date (urgent first)
+        result.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+
+        if (limit) {
+            result = result.slice(0, limit);
+        }
+
+        return result;
     }
 }));

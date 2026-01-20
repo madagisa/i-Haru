@@ -171,5 +171,10 @@ export const useScheduleStore = create((set, get) => ({
 
     getSchedule: (id) => {
         return get().schedules.find(s => s.id === id);
+    },
+
+    getTodaySchedules: (options = {}) => {
+        const today = format(new Date(), 'yyyy-MM-dd');
+        return get().getSchedulesForDate(today, options);
     }
 }));
