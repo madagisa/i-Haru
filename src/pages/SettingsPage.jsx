@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { useFamilyStore } from '../store/familyStore'
-import { useMessageStore } from '../store/messageStore'
 import {
     User,
     Users,
@@ -15,7 +14,6 @@ import {
     Moon,
     Sun,
     Bell,
-    BellOff,
     HelpCircle,
     MessageCircle,
     Send,
@@ -30,18 +28,16 @@ function SettingsPage() {
     const navigate = useNavigate()
     const { user, logout, updateProfile } = useAuthStore()
     const { family, children, members, addChild, removeChild, loadFamily } = useFamilyStore()
-    const { messages, sendMessage, getMessages } = useMessageStore()
 
     const [copied, setCopied] = useState(false)
     const [isAddChildModalOpen, setIsAddChildModalOpen] = useState(false)
     const [newChildName, setNewChildName] = useState('')
     const [selectedColor, setSelectedColor] = useState(CHILD_COLORS[0])
 
-    // New modal states
+    // Modal states
     const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false)
     const [isDarkModeModalOpen, setIsDarkModeModalOpen] = useState(false)
     const [isHelpModalOpen, setIsHelpModalOpen] = useState(false)
-    const [isMessageModalOpen, setIsMessageModalOpen] = useState(false)
 
     // Settings states
     const [notifications, setNotifications] = useState(() => {
@@ -51,7 +47,6 @@ function SettingsPage() {
     const [darkMode, setDarkMode] = useState(() => {
         return localStorage.getItem('iharu-theme') || 'auto'
     })
-    const [messageText, setMessageText] = useState('')
 
     const isParent = user?.role === 'parent'
 
@@ -119,6 +114,11 @@ function SettingsPage() {
     const handleDeleteAccount = async () => {
         const confirmMessage = "정말로 탈퇴하시겠습니까?\n모든 데이터(가족, 일정, 준비물, 메시지)가 영구적으로 삭제됩니다.";
         if (confirm(confirmMessage)) {
+            // Assuming deleteAccount is available from useAuthStore, but line 31 destructuring doesn't include it.
+            // Checking previous edits, deleteAccount IS in authStore. need to add it to destructuring.
+            const { deleteAccount } = useAuthStore.getState();
+            // Or better, update line 31. But since I'm rewriting the whole file, I will update line 31.
+
             const result = await deleteAccount();
             if (result.success) {
                 alert('탈퇴가 완료되었습니다.');
@@ -477,55 +477,6 @@ function SettingsPage() {
                     <div className="help-contact">
                         <p>문의: support@i-haru.com</p>
                     </div>
-                </div>
-            </Modal>
-
-            {/* Message Modal */}
-            <Modal
-                isOpen={isMessageModalOpen}
-                onClose={() => setIsMessageModalOpen(false)}
-                title="가족 메시지"
-            >
-                <div className="message-modal-content">
-                    <form onSubmit={handleSendMessage} className="message-form">
-                        <div className="input-group">
-                            <label className="input-label">메시지 보내기</label>
-                            <textarea
-                                className="input textarea"
-                                placeholder="가족에게 보낼 메시지를 입력하세요"
-                                rows={3}
-                                value={messageText}
-                                onChange={(e) => setMessageText(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <button type="submit" className="btn btn-primary btn-full">
-                            <Send size={18} />
-                            메시지 보내기
-                        </button>
-                    </form>
-
-                    {userMessages.length > 0 && (
-                        <div className="recent-messages">
-                            <h4>최근 메시지</h4>
-                            <div className="message-list-modal">
-                                {userMessages.slice(0, 5).map(msg => (
-                                    <div key={msg.id} className="message-item-modal">
-                                        <div className="message-sender">{msg.fromUserName}</div>
-                                        <div className="message-content">{msg.content}</div>
-                                        <div className="message-time">
-                                            {new Date(msg.createdAt).toLocaleString('ko-KR', {
-                                                month: 'short',
-                                                day: 'numeric',
-                                                hour: '2-digit',
-                                                minute: '2-digit'
-                                            })}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
                 </div>
             </Modal>
         </div>
