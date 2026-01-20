@@ -122,6 +122,7 @@ body {
   background-color: var(--bg-secondary);
   min-height: 100vh;
   min-height: 100dvh;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 #root {

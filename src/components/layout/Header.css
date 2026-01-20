@@ -11,6 +11,7 @@
     align-items: center;
     justify-content: space-between;
     padding: var(--space-sm) var(--space-md);
+    padding-top: calc(var(--space-sm) + env(safe-area-inset-top));
     max-width: 480px;
     margin: 0 auto;
 }
