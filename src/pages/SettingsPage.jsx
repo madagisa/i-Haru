@@ -116,20 +116,17 @@ function SettingsPage() {
         }
     }
 
-    const handleSendMessage = async (e) => {
-        e.preventDefault()
-        if (!messageText.trim()) return
-
-        await sendMessage({
-            familyId: user.familyId,
-            fromUserId: user.id,
-            fromUserName: user.name,
-            toUserId: null, // broadcast to all family
-            content: messageText
-        })
-
-        setMessageText('')
-        alert('메시지를 보냈습니다!')
+    const handleDeleteAccount = async () => {
+        const confirmMessage = "정말로 탈퇴하시겠습니까?\n모든 데이터(가족, 일정, 준비물, 메시지)가 영구적으로 삭제됩니다.";
+        if (confirm(confirmMessage)) {
+            const result = await deleteAccount();
+            if (result.success) {
+                alert('탈퇴가 완료되었습니다.');
+                navigate('/login');
+            } else {
+                alert('탈퇴 실패: ' + result.error);
+            }
+        }
     }
 
     const getDarkModeLabel = () => {
@@ -139,8 +136,6 @@ function SettingsPage() {
             default: return '자동'
         }
     }
-
-    const userMessages = getMessages(user?.id)
 
     return (
         <div className="settings-page">
@@ -258,20 +253,6 @@ function SettingsPage() {
                 </div>
             </section>
 
-            {/* Family Messages Section */}
-            <section className="settings-section">
-                <h3 className="section-title">가족 메시지</h3>
-                <div className="settings-list">
-                    <button className="settings-item" onClick={() => setIsMessageModalOpen(true)}>
-                        <div className="settings-item-icon">
-                            <MessageCircle size={20} />
-                        </div>
-                        <span className="settings-item-label">가족에게 메시지 보내기</span>
-                        <ChevronRight size={20} className="settings-item-arrow" />
-                    </button>
-                </div>
-            </section>
-
             {/* App Settings Section */}
             <section className="settings-section">
                 <h3 className="section-title">앱 설정</h3>
@@ -303,12 +284,18 @@ function SettingsPage() {
                 </div>
             </section>
 
-            {/* Logout */}
+            {/* Account Actions */}
             <section className="settings-section">
-                <button className="logout-btn" onClick={handleLogout}>
-                    <LogOut size={20} />
-                    로그아웃
-                </button>
+                <div className="account-actions">
+                    <button className="logout-btn" onClick={handleLogout}>
+                        <LogOut size={20} />
+                        로그아웃
+                    </button>
+
+                    <button className="delete-account-btn" onClick={handleDeleteAccount}>
+                        회원 탈퇴
+                    </button>
+                </div>
             </section>
 
             <footer className="settings-footer">

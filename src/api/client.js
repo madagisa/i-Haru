@@ -55,7 +55,11 @@ export const authApi = {
         body: JSON.stringify({ email, password })
     }),
 
-    me: () => apiRequest('/auth/me')
+    me: () => apiRequest('/auth/me'),
+
+    deleteAccount: () => apiRequest('/auth/delete', {
+        method: 'DELETE'
+    })
 };
 
 // Family API
@@ -139,8 +143,14 @@ export const messagesApi = {
     send: (data) => apiRequest('/messages', {
         method: 'POST',
         body: JSON.stringify(data)
+    }),
+
+    delete: (messageId) => apiRequest('/messages', {
+        method: 'DELETE',
+        body: JSON.stringify({ messageId })
     })
 };
+
 
 export default {
     auth: authApi,

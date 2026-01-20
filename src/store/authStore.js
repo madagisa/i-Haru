@@ -118,6 +118,25 @@ export const useAuthStore = create(
                 }
             },
 
+            deleteAccount: async () => {
+                set({ isLoading: true, error: null })
+                try {
+                    if (USE_DEMO) {
+                        // Demo logic
+                        set({ user: null, isAuthenticated: false, isLoading: false })
+                        return { success: true }
+                    }
+
+                    await authApi.deleteAccount()
+                    set({ user: null, isAuthenticated: false, isLoading: false })
+                    localStorage.removeItem('iharu-auth') // Clear persistence
+                    return { success: true }
+                } catch (error) {
+                    set({ error: error.message, isLoading: false })
+                    return { success: false, error: error.message }
+                }
+            },
+
             logout: () => {
                 set({
                     user: null,

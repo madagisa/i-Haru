@@ -98,6 +98,31 @@ export const useMessageStore = create((set, get) => ({
         }
     },
 
+    // Delete message
+    deleteMessage: async (messageId) => {
+        set({ isLoading: true });
+        try {
+            if (USE_DEMO) {
+                set(state => ({
+                    messages: state.messages.filter(m => m.id !== messageId),
+                    isLoading: false
+                }));
+                return { success: true };
+            }
+
+            await messagesApi.delete(messageId);
+            set(state => ({
+                messages: state.messages.filter(m => m.id !== messageId),
+                isLoading: false
+            }));
+            return { success: true };
+        } catch (error) {
+            console.error('Delete message error:', error);
+            set({ error: error.message, isLoading: false });
+            return { success: false, error: error.message };
+        }
+    },
+
     // Mark as read (local only for now)
     markAsRead: async (messageId) => {
         set(state => ({

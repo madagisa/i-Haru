@@ -286,6 +286,12 @@
     margin-bottom: 2px;
 }
 
+.message-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
 .message-sender {
     font-weight: 600;
     color: var(--text-primary);
@@ -295,6 +301,21 @@
 .message-time {
     font-size: var(--font-size-xs);
     color: var(--text-tertiary);
+}
+
+.message-delete-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: var(--radius-full);
+    color: var(--text-tertiary);
+    transition: all var(--transition-fast);
+}
+
+.message-delete-btn:hover {
+    background: rgba(225, 112, 85, 0.1);
+    color: var(--color-error);
 }
 
 .message-text {

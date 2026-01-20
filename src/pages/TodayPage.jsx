@@ -16,7 +16,8 @@ import {
     AlertCircle,
     Plus,
     Send,
-    X
+    X,
+    Trash2
 } from 'lucide-react'
 import Modal from '../components/common/Modal'
 import './TodayPage.css'
@@ -26,7 +27,7 @@ function TodayPage() {
     const { children, selectedChildId, loadFamily } = useFamilyStore()
     const { getTodaySchedules, loadSchedules } = useScheduleStore()
     const { getPendingPreparations, getDday, isUrgent, toggleCompletion, loadPreparations } = usePrepStore()
-    const { getRecentMessages, sendMessage, loadMessages } = useMessageStore()
+    const { getRecentMessages, sendMessage, loadMessages, deleteMessage } = useMessageStore()
 
     const [isMessageModalOpen, setIsMessageModalOpen] = useState(false)
     const [messageText, setMessageText] = useState('')
@@ -52,6 +53,12 @@ function TodayPage() {
         if (result.success) {
             setMessageText('')
             setIsMessageModalOpen(false)
+        }
+    }
+
+    const handleDeleteMessage = async (messageId) => {
+        if (confirm('메시지를 삭제하시겠습니까?')) {
+            await deleteMessage(messageId)
         }
     }
 
@@ -280,9 +287,19 @@ function TodayPage() {
                                 <div className="message-content">
                                     <div className="message-header">
                                         <span className="message-sender">{msg.fromUserName}</span>
-                                        <span className="message-time">
-                                            {format(new Date(msg.createdAt), 'a h:mm', { locale: ko })}
-                                        </span>
+                                        <div className="message-meta">
+                                            <span className="message-time">
+                                                {format(new Date(msg.createdAt), 'a h:mm', { locale: ko })}
+                                            </span>
+                                            {msg.fromUserId === user?.id && (
+                                                <button
+                                                    className="message-delete-btn"
+                                                    onClick={() => handleDeleteMessage(msg.id)}
+                                                >
+                                                    <Trash2 size={14} />
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
                                     <p className="message-text">{msg.content}</p>
                                 </div>

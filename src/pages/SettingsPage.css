@@ -319,6 +319,30 @@
     background: rgba(225, 112, 85, 0.1);
 }
 
+/* Account Actions */
+.account-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.delete-account-btn {
+    width: 100%;
+    padding: var(--space-md);
+    background: transparent;
+    border: 1px solid var(--bg-tertiary);
+    border-radius: var(--radius-xl);
+    color: var(--text-tertiary);
+    font-size: var(--font-size-sm);
+    transition: all var(--transition-fast);
+}
+
+.delete-account-btn:hover {
+    color: var(--color-error);
+    border-color: var(--color-error);
+    background: rgba(225, 112, 85, 0.05);
+}
+
 /* Footer */
 .settings-footer {
     text-align: center;
