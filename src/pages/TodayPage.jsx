@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuthStore } from '../store/authStore'
 import { useFamilyStore } from '../store/familyStore'
 import { useScheduleStore } from '../store/scheduleStore'
@@ -13,8 +13,12 @@ import {
     ChevronRight,
     CalendarDays,
     CheckCircle2,
-    AlertCircle
+    AlertCircle,
+    Plus,
+    Send,
+    X
 } from 'lucide-react'
+import Modal from '../components/common/Modal'
 import './TodayPage.css'
 
 function TodayPage() {
@@ -22,15 +26,34 @@ function TodayPage() {
     const { children, selectedChildId, loadFamily } = useFamilyStore()
     const { getTodaySchedules, loadSchedules } = useScheduleStore()
     const { getPendingPreparations, getDday, isUrgent, toggleCompletion, loadPreparations } = usePrepStore()
-    const { getRecentMessages } = useMessageStore()
+    const { getRecentMessages, sendMessage, loadMessages } = useMessageStore()
+
+    const [isMessageModalOpen, setIsMessageModalOpen] = useState(false)
+    const [messageText, setMessageText] = useState('')
 
     useEffect(() => {
         if (user?.familyId) {
             loadFamily(user.familyId)
             loadSchedules()
             loadPreparations()
+            loadMessages()
         }
-    }, [user?.familyId, loadFamily, loadSchedules, loadPreparations])
+    }, [user?.familyId, loadFamily, loadSchedules, loadPreparations, loadMessages])
+
+    const handleSendMessage = async (e) => {
+        e.preventDefault()
+        if (!messageText.trim()) return
+
+        const result = await sendMessage({
+            content: messageText,
+            toUserId: null
+        })
+
+        if (result.success) {
+            setMessageText('')
+            setIsMessageModalOpen(false)
+        }
+    }
 
     const isParent = user?.role === 'parent'
     const childFilter = isParent ? selectedChildId : user?.id
@@ -228,18 +251,31 @@ function TodayPage() {
                         <MessageCircle size={20} />
                         가족 메시지
                     </h3>
+                    <button
+                        className="section-add-btn"
+                        onClick={() => setIsMessageModalOpen(true)}
+                    >
+                        <Plus size={18} />
+                    </button>
                 </div>
 
                 {recentMessages.length === 0 ? (
                     <div className="empty-card">
                         <p>새로운 메시지가 없어요 💬</p>
+                        <button
+                            className="btn btn-outline btn-sm"
+                            onClick={() => setIsMessageModalOpen(true)}
+                        >
+                            <Plus size={16} />
+                            메시지 보내기
+                        </button>
                     </div>
                 ) : (
                     <div className="message-list">
                         {recentMessages.map(msg => (
                             <div key={msg.id} className="message-card">
                                 <div className="message-avatar">
-                                    {msg.fromUserName.charAt(0)}
+                                    {msg.fromUserName?.charAt(0) || '?'}
                                 </div>
                                 <div className="message-content">
                                     <div className="message-header">
@@ -255,6 +291,30 @@ function TodayPage() {
                     </div>
                 )}
             </section>
+
+            {/* Message Send Modal */}
+            <Modal
+                isOpen={isMessageModalOpen}
+                onClose={() => setIsMessageModalOpen(false)}
+                title="가족에게 메시지 보내기"
+            >
+                <form onSubmit={handleSendMessage} className="message-send-form">
+                    <div className="input-group">
+                        <textarea
+                            className="input textarea"
+                            placeholder="가족에게 보낼 메시지를 입력하세요"
+                            rows={4}
+                            value={messageText}
+                            onChange={(e) => setMessageText(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <button type="submit" className="btn btn-primary btn-full">
+                        <Send size={18} />
+                        메시지 보내기
+                    </button>
+                </form>
+            </Modal>
         </div>
     )
 }

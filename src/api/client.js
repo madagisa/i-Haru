@@ -132,9 +132,20 @@ export const preparationsApi = {
     })
 };
 
+// Messages API
+export const messagesApi = {
+    getAll: () => apiRequest('/messages'),
+
+    send: (data) => apiRequest('/messages', {
+        method: 'POST',
+        body: JSON.stringify(data)
+    })
+};
+
 export default {
     auth: authApi,
     family: familyApi,
     schedules: schedulesApi,
-    preparations: preparationsApi
+    preparations: preparationsApi,
+    messages: messagesApi
 };

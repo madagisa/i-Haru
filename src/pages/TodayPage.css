@@ -304,3 +304,37 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+/* Section Add Button */
+.section-add-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    background: var(--color-primary);
+    color: var(--text-inverse);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+}
+
+.section-add-btn:hover {
+    transform: scale(1.1);
+    background: var(--color-primary-dark);
+}
+
+/* Message Send Form */
+.message-send-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.message-send-form .textarea {
+    resize: none;
+}
+
+/* Empty Card Button */
+.empty-card .btn {
+    margin-top: var(--space-sm);
+}
