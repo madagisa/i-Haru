@@ -35,7 +35,8 @@ function PrepPage() {
         toggleCompletion,
         getDday,
         isUrgent,
-        isOverdue
+        isOverdue,
+        loadPreparations
     } = usePrepStore()
 
     const [filter, setFilter] = useState('pending') // 'pending' | 'completed' | 'all'
@@ -48,8 +49,9 @@ function PrepPage() {
     useEffect(() => {
         if (user?.familyId) {
             loadFamily(user.familyId)
+            loadPreparations()
         }
-    }, [user?.familyId, loadFamily])
+    }, [user?.familyId, loadFamily, loadPreparations])
 
     const preparations = getPreparations({
         childId: childFilter,

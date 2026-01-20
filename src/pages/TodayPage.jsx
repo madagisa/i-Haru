@@ -20,15 +20,17 @@ import './TodayPage.css'
 function TodayPage() {
     const { user } = useAuthStore()
     const { children, selectedChildId, loadFamily } = useFamilyStore()
-    const { getTodaySchedules } = useScheduleStore()
-    const { getPendingPreparations, getDday, isUrgent, toggleCompletion } = usePrepStore()
+    const { getTodaySchedules, loadSchedules } = useScheduleStore()
+    const { getPendingPreparations, getDday, isUrgent, toggleCompletion, loadPreparations } = usePrepStore()
     const { getRecentMessages } = useMessageStore()
 
     useEffect(() => {
         if (user?.familyId) {
             loadFamily(user.familyId)
+            loadSchedules()
+            loadPreparations()
         }
-    }, [user?.familyId, loadFamily])
+    }, [user?.familyId, loadFamily, loadSchedules, loadPreparations])
 
     const isParent = user?.role === 'parent'
     const childFilter = isParent ? selectedChildId : user?.id

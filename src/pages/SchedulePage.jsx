@@ -21,7 +21,7 @@ const DAYS_OF_WEEK = ['일', '월', '화', '수', '목', '금', '토']
 function SchedulePage() {
     const { user } = useAuthStore()
     const { children, selectedChildId, loadFamily } = useFamilyStore()
-    const { schedules, getSchedulesForDate, addSchedule, updateSchedule, deleteSchedule } = useScheduleStore()
+    const { schedules, getSchedulesForDate, addSchedule, updateSchedule, deleteSchedule, loadSchedules } = useScheduleStore()
 
     const [currentMonth, setCurrentMonth] = useState(new Date())
     const [selectedDate, setSelectedDate] = useState(new Date())
@@ -34,8 +34,9 @@ function SchedulePage() {
     useEffect(() => {
         if (user?.familyId) {
             loadFamily(user.familyId)
+            loadSchedules()
         }
-    }, [user?.familyId, loadFamily])
+    }, [user?.familyId, loadFamily, loadSchedules])
 
     // Form state
     const [formData, setFormData] = useState({
