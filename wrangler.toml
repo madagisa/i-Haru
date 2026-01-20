@@ -7,4 +7,4 @@ compatibility_flags = ["nodejs_compat"]
 [[d1_databases]]
 binding = "DB"
 database_name = "i-haru-db"
-database_id = "YOUR_DATABASE_ID_HERE"  # Replace with actual ID after creating DB
+database_id = "2b5ae75d-7568-4231-85a1-eebf772e443f"
