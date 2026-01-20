@@ -229,7 +229,7 @@ function SettingsPage() {
             </section>
 
             <footer className="settings-footer">
-                <p>아이하루 v1.0.0</p>
+                <p>i-Haru v1.0.0</p>
                 <p>© 2026 i-Haru. All rights reserved.</p>
             </footer>
 

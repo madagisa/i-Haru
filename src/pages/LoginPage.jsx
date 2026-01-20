@@ -27,8 +27,8 @@ function LoginPage() {
             <div className="auth-container">
                 <div className="auth-header">
                     <div className="auth-logo">
-                        <span className="auth-logo-icon">🌸</span>
-                        <h1 className="auth-logo-text">아이하루</h1>
+                        <span className="auth-logo-icon">📅</span>
+                        <h1 className="auth-logo-text">i-Haru</h1>
                     </div>
                     <p className="auth-subtitle">자녀의 하루를 함께 관리해요</p>
                 </div>
@@ -96,11 +96,7 @@ function LoginPage() {
                     <Link to="/signup" className="auth-link">회원가입</Link>
                 </div>
 
-                <div className="auth-demo-info">
-                    <p className="demo-title">🔑 데모 계정</p>
-                    <p>부모: parent@demo.com / demo1234</p>
-                    <p>자녀: child1@demo.com / demo1234</p>
-                </div>
+
             </div>
         </div>
     )

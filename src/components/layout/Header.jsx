@@ -19,8 +19,8 @@ function Header() {
             <div className="header-content">
                 <div className="header-left">
                     <h1 className="header-logo">
-                        <span className="header-logo-icon">🌸</span>
-                        <span className="header-logo-text">아이하루</span>
+                        <span className="header-logo-icon">📅</span>
+                        <span className="header-logo-text">i-Haru</span>
                     </h1>
                 </div>
 
