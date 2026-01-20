@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { familyApi } from '../api/client'
 
 // Demo mode flag
-const USE_DEMO = true;
+const USE_DEMO = false;
 
 // Demo data
 const demoFamily = {

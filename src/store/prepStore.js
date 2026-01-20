@@ -3,7 +3,7 @@ import { preparationsApi } from '../api/client'
 import { format, differenceInDays, parseISO } from 'date-fns'
 
 // Demo mode flag
-const USE_DEMO = true;
+const USE_DEMO = false;
 
 // Demo preparations
 const today = format(new Date(), 'yyyy-MM-dd');

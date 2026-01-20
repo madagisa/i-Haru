@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware'
 import { authApi } from '../api/client'
 
 // Demo mode flag - set to false when D1 is connected
-const USE_DEMO = true;
+const USE_DEMO = false;
 
 // Demo users for offline testing
 const demoUsers = {

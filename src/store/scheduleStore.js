@@ -3,7 +3,7 @@ import { schedulesApi } from '../api/client'
 import { format, addDays, isSameDay, parseISO } from 'date-fns'
 
 // Demo mode flag
-const USE_DEMO = true;
+const USE_DEMO = false;
 
 // Demo schedules
 const today = format(new Date(), 'yyyy-MM-dd');
