@@ -57,7 +57,7 @@ function TodayPage() {
     }
 
     const handleDeleteMessage = async (messageId) => {
-        if (confirm('메시지를 삭제하시겠습니까?')) {
+        if (confirm('공지사항을 삭제하시겠습니까?')) {
             await deleteMessage(messageId)
         }
     }
@@ -256,7 +256,7 @@ function TodayPage() {
                 <div className="section-header">
                     <h3 className="section-title">
                         <MessageCircle size={20} />
-                        가족 메시지
+                        가족 공지사항
                     </h3>
                     <button
                         className="section-add-btn"
@@ -268,13 +268,13 @@ function TodayPage() {
 
                 {recentMessages.length === 0 ? (
                     <div className="empty-card">
-                        <p>새로운 메시지가 없어요 💬</p>
+                        <p>새로운 공지사항이 없어요 📢</p>
                         <button
                             className="btn btn-outline btn-sm"
                             onClick={() => setIsMessageModalOpen(true)}
                         >
                             <Plus size={16} />
-                            메시지 보내기
+                            공지 작성하기
                         </button>
                     </div>
                 ) : (
@@ -313,13 +313,13 @@ function TodayPage() {
             <Modal
                 isOpen={isMessageModalOpen}
                 onClose={() => setIsMessageModalOpen(false)}
-                title="가족에게 메시지 보내기"
+                title="가족 공지사항 작성"
             >
                 <form onSubmit={handleSendMessage} className="message-send-form">
                     <div className="input-group">
                         <textarea
                             className="input textarea"
-                            placeholder="가족에게 보낼 메시지를 입력하세요"
+                            placeholder="가족에게 알릴 내용을 입력하세요"
                             rows={4}
                             value={messageText}
                             onChange={(e) => setMessageText(e.target.value)}
@@ -328,7 +328,7 @@ function TodayPage() {
                     </div>
                     <button type="submit" className="btn btn-primary btn-full">
                         <Send size={18} />
-                        메시지 보내기
+                        공지 등록하기
                     </button>
                 </form>
             </Modal>

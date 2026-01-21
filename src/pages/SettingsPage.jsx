@@ -113,7 +113,7 @@ function SettingsPage() {
     }
 
     const handleDeleteAccount = async () => {
-        const confirmMessage = "정말로 탈퇴하시겠습니까?\n모든 데이터(가족, 일정, 준비물, 메시지)가 영구적으로 삭제됩니다.";
+        const confirmMessage = "정말로 탈퇴하시겠습니까?\n모든 데이터(가족, 일정, 준비물, 공지사항)가 영구적으로 삭제됩니다.";
         if (confirm(confirmMessage)) {
             // Assuming deleteAccount is available from useAuthStore, but line 31 destructuring doesn't include it.
             // Checking previous edits, deleteAccount IS in authStore. need to add it to destructuring.
@@ -413,7 +413,7 @@ function SettingsPage() {
                     <div className="notification-item">
                         <div className="notification-info">
                             <MessageCircle size={20} />
-                            <span>메시지 알림</span>
+                            <span>공지사항 알림</span>
                         </div>
                         <label className="toggle-switch">
                             <input
@@ -484,8 +484,8 @@ function SettingsPage() {
                         <p>설정에서 초대 코드를 복사하여 가족에게 공유하세요. 자녀가 회원가입 후 코드를 입력하면 가족에 참여합니다.</p>
                     </div>
                     <div className="help-section">
-                        <h4>💬 가족 메시지</h4>
-                        <p>설정에서 가족에게 간단한 메시지를 보낼 수 있습니다. 오늘 페이지에서 최근 메시지를 확인하세요.</p>
+                        <h4>📢 가족 공지사항</h4>
+                        <p>오늘 페이지에서 가족 공지사항을 등록하고 확인할 수 있습니다.</p>
                     </div>
                     <div className="help-section">
                         <h4>🌙 다크 모드</h4>
