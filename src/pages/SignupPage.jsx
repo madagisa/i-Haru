@@ -42,7 +42,12 @@ function SignupPage() {
 
         const result = await signup(formData)
         if (result.success) {
-            navigate('/')
+            // 자녀는 초대코드 입력 페이지로, 부모는 홈으로 이동
+            if (formData.role === 'child') {
+                navigate('/join-family')
+            } else {
+                navigate('/')
+            }
         }
     }
 

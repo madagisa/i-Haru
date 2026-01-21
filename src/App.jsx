@@ -62,6 +62,7 @@ function App() {
         </PublicRoute>
       } />
       <Route path="/join/:inviteCode" element={<JoinFamilyPage />} />
+      <Route path="/join-family" element={<JoinFamilyPage />} />
 
       {/* Protected Routes with Layout */}
       <Route path="/" element={

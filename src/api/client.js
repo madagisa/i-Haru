@@ -69,16 +69,20 @@ export const familyApi = {
     join: (inviteCode) => apiRequest('/family', {
         method: 'POST',
         body: JSON.stringify({ inviteCode })
-    }),
+    })
+};
 
-    addChild: (data) => apiRequest('/family/children', {
+// Children API (child profiles)
+export const childrenApi = {
+    getAll: () => apiRequest('/children'),
+
+    add: (data) => apiRequest('/children', {
         method: 'POST',
         body: JSON.stringify(data)
     }),
 
-    removeChild: (childId) => apiRequest('/family/children', {
-        method: 'DELETE',
-        body: JSON.stringify({ childId })
+    remove: (childId) => apiRequest(`/children/${childId}`, {
+        method: 'DELETE'
     })
 };
 
@@ -155,6 +159,7 @@ export const messagesApi = {
 export default {
     auth: authApi,
     family: familyApi,
+    children: childrenApi,
     schedules: schedulesApi,
     preparations: preparationsApi,
     messages: messagesApi

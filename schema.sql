@@ -76,6 +76,18 @@ CREATE TABLE IF NOT EXISTS messages (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Child profiles table (for parent-registered children with individual invite codes)
+CREATE TABLE IF NOT EXISTS child_profiles (
+  id TEXT PRIMARY KEY,
+  family_id TEXT REFERENCES families(id),
+  name TEXT NOT NULL,
+  color TEXT DEFAULT '#4ECDC4',
+  invite_code TEXT UNIQUE NOT NULL,
+  linked_user_id TEXT REFERENCES users(id),
+  created_by TEXT REFERENCES users(id),
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Indexes for better query performance
 CREATE INDEX IF NOT EXISTS idx_users_family ON users(family_id);
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
@@ -86,3 +98,6 @@ CREATE INDEX IF NOT EXISTS idx_preparations_family ON preparations(family_id);
 CREATE INDEX IF NOT EXISTS idx_preparations_child ON preparations(child_id);
 CREATE INDEX IF NOT EXISTS idx_preparations_due ON preparations(due_date);
 CREATE INDEX IF NOT EXISTS idx_messages_family ON messages(family_id);
+CREATE INDEX IF NOT EXISTS idx_child_profiles_family ON child_profiles(family_id);
+CREATE INDEX IF NOT EXISTS idx_child_profiles_invite ON child_profiles(invite_code);
+CREATE INDEX IF NOT EXISTS idx_child_profiles_linked ON child_profiles(linked_user_id);

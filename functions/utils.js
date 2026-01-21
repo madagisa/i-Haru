@@ -7,14 +7,29 @@ export function generateId(prefix = '') {
     return prefix ? `${prefix}_${timestamp}${random}` : `${timestamp}${random}`;
 }
 
-// Generate invite code for family
-export function generateInviteCode() {
+// Generate invite code for family (parent)
+export function generateParentInviteCode() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let code = 'HARU';
+    let code = 'PRNT';
     for (let i = 0; i < 4; i++) {
         code += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     return code;
+}
+
+// Generate invite code for child profile
+export function generateChildInviteCode() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let code = 'CHLD';
+    for (let i = 0; i < 4; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+}
+
+// Legacy - kept for compatibility
+export function generateInviteCode() {
+    return generateParentInviteCode();
 }
 
 // Hash password (simple hash for demo - use bcrypt in production)

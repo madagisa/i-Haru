@@ -231,6 +231,16 @@
     color: var(--text-tertiary);
 }
 
+.child-invite-code {
+    font-size: var(--font-size-xs);
+    color: var(--color-secondary);
+    font-weight: 600;
+    padding: 2px 8px;
+    background: rgba(78, 205, 196, 0.1);
+    border-radius: var(--radius-sm);
+    margin-top: 4px;
+}
+
 .remove-btn {
     width: 36px;
     height: 36px;

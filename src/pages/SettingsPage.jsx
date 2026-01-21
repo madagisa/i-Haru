@@ -77,8 +77,9 @@ function SettingsPage() {
     }, [notifications])
 
     const handleCopyInviteCode = async () => {
-        if (family?.inviteCode) {
-            await navigator.clipboard.writeText(family.inviteCode)
+        const code = family?.parentInviteCode || family?.inviteCode
+        if (code) {
+            await navigator.clipboard.writeText(code)
             setCopied(true)
             setTimeout(() => setCopied(false), 2000)
         }
@@ -175,12 +176,12 @@ function SettingsPage() {
                             </div>
                         </div>
 
-                        {/* Invite Code (Parents only) */}
+                        {/* Parent Invite Code (Parents only) */}
                         {isParent && (
                             <div className="invite-section">
-                                <p className="invite-label">초대 코드</p>
+                                <p className="invite-label">부모 초대 코드</p>
                                 <div className="invite-code-container">
-                                    <code className="invite-code">{family.inviteCode}</code>
+                                    <code className="invite-code">{family.parentInviteCode || family.inviteCode}</code>
                                     <button
                                         className="copy-btn"
                                         onClick={handleCopyInviteCode}
@@ -188,7 +189,7 @@ function SettingsPage() {
                                         {copied ? <Check size={18} /> : <Copy size={18} />}
                                     </button>
                                 </div>
-                                <p className="invite-hint">자녀에게 이 코드를 공유해서 가족에 초대하세요</p>
+                                <p className="invite-hint">배우자(다른 부모)에게 이 코드를 공유하세요</p>
                             </div>
                         )}
                     </div>
@@ -228,7 +229,7 @@ function SettingsPage() {
 
                         {/* Children */}
                         {children.map(child => (
-                            <div key={child.id} className="member-item">
+                            <div key={child.id} className="member-item member-item-child">
                                 <div
                                     className="member-avatar"
                                     style={{ background: child.color }}
@@ -237,7 +238,12 @@ function SettingsPage() {
                                 </div>
                                 <div className="member-info">
                                     <span className="member-name">{child.name}</span>
-                                    <span className="member-role">자녀</span>
+                                    <span className="member-role">
+                                        {child.isLinked ? '자녀 (연결됨)' : '자녀 (미연결)'}
+                                    </span>
+                                    {isParent && child.inviteCode && !child.isLinked && (
+                                        <span className="child-invite-code">초대코드: {child.inviteCode}</span>
+                                    )}
                                 </div>
                                 {isParent && (
                                     <button
