@@ -52,7 +52,7 @@ export async function onRequestPost(context) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    from: 'i-Haru <noreply@i-haru.com>',
+                    from: 'i-Haru <onboarding@resend.dev>',
                     to: email,
                     subject: '[i-Haru] 비밀번호 재설정 코드',
                     html: `
