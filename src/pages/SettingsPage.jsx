@@ -242,7 +242,18 @@ function SettingsPage() {
                                         {child.isLinked ? '자녀 (연결됨)' : '자녀 (미연결)'}
                                     </span>
                                     {isParent && child.inviteCode && !child.isLinked && (
-                                        <span className="child-invite-code">초대코드: {child.inviteCode}</span>
+                                        <div className="child-invite-row">
+                                            <span className="child-invite-code">초대코드: {child.inviteCode}</span>
+                                            <button
+                                                className="copy-btn-small"
+                                                onClick={async () => {
+                                                    await navigator.clipboard.writeText(child.inviteCode)
+                                                    alert(`${child.name} 초대코드가 복사되었습니다!`)
+                                                }}
+                                            >
+                                                <Copy size={14} />
+                                            </button>
+                                        </div>
                                     )}
                                 </div>
                                 {isParent && (
