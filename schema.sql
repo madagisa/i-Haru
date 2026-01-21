@@ -101,3 +101,14 @@ CREATE INDEX IF NOT EXISTS idx_messages_family ON messages(family_id);
 CREATE INDEX IF NOT EXISTS idx_child_profiles_family ON child_profiles(family_id);
 CREATE INDEX IF NOT EXISTS idx_child_profiles_invite ON child_profiles(invite_code);
 CREATE INDEX IF NOT EXISTS idx_child_profiles_linked ON child_profiles(linked_user_id);
+
+-- Password reset tokens
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+  id TEXT PRIMARY KEY,
+  user_id TEXT REFERENCES users(id),
+  token TEXT UNIQUE NOT NULL,
+  expires_at DATETIME NOT NULL,
+  used BOOLEAN DEFAULT FALSE,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_password_reset_token ON password_reset_tokens(token);

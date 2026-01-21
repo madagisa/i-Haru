@@ -92,6 +92,9 @@ function LoginPage() {
                 </form>
 
                 <div className="auth-footer">
+                    <Link to="/forgot-password" className="auth-link" style={{ marginBottom: '12px', display: 'block' }}>
+                        비밀번호를 잊으셨나요?
+                    </Link>
                     <p>아직 계정이 없으신가요?</p>
                     <Link to="/signup" className="auth-link">회원가입</Link>
                 </div>
