@@ -13,7 +13,8 @@ function SignupPage() {
         email: '',
         password: '',
         confirmPassword: '',
-        role: 'parent'
+        role: 'parent',
+        createNewFamily: true  // 부모: 새 가족 만들기(true) or 기존 가족 참여(false)
     })
     const [showPassword, setShowPassword] = useState(false)
     const [validationError, setValidationError] = useState('')
@@ -42,8 +43,8 @@ function SignupPage() {
 
         const result = await signup(formData)
         if (result.success) {
-            // 자녀는 초대코드 입력 페이지로, 부모는 홈으로 이동
-            if (formData.role === 'child') {
+            // 자녀 또는 기존 가족 참여를 선택한 부모는 초대코드 입력 페이지로 이동
+            if (formData.role === 'child' || !formData.createNewFamily) {
                 navigate('/join-family')
             } else {
                 navigate('/')
@@ -153,6 +154,34 @@ function SignupPage() {
                             </button>
                         </div>
                     </div>
+
+                    {/* 부모 선택 시 가족 옵션 표시 */}
+                    {formData.role === 'parent' && (
+                        <div className="input-group">
+                            <label className="input-label">가족 설정</label>
+                            <div className="role-selector">
+                                <button
+                                    type="button"
+                                    className={`role-btn ${formData.createNewFamily ? 'active' : ''}`}
+                                    onClick={() => setFormData(prev => ({ ...prev, createNewFamily: true }))}
+                                >
+                                    🏠 새 가족 만들기
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`role-btn ${!formData.createNewFamily ? 'active' : ''}`}
+                                    onClick={() => setFormData(prev => ({ ...prev, createNewFamily: false }))}
+                                >
+                                    👨‍👩‍👧‍👦 기존 가족 참여
+                                </button>
+                            </div>
+                            {!formData.createNewFamily && (
+                                <p className="input-hint" style={{ marginTop: '8px', fontSize: '12px', color: '#888' }}>
+                                    가입 후 초대 코드를 입력하여 가족에 참여할 수 있어요
+                                </p>
+                            )}
+                        </div>
+                    )}
 
                     <button
                         type="submit"

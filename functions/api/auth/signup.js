@@ -14,7 +14,7 @@ export async function onRequestPost(context) {
     const { env } = context;
     const body = await parseBody(context.request);
 
-    const { email, password, name, role } = body;
+    const { email, password, name, role, createNewFamily = true } = body;
 
     // Validation
     if (!email || !password || !name || !role) {
@@ -45,8 +45,8 @@ export async function onRequestPost(context) {
 
         let familyId = null;
 
-        // If parent, create a new family
-        if (role === 'parent') {
+        // If parent AND wants to create new family, create one
+        if (role === 'parent' && createNewFamily) {
             familyId = generateId('family');
             const inviteCode = generateInviteCode();
 
