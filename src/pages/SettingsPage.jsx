@@ -195,6 +195,24 @@ function SettingsPage() {
                     </div>
                 )}
 
+                {/* 가족이 없는 경우: 가족 참여 섹션 */}
+                {!family && (
+                    <div className="family-card no-family-card">
+                        <div className="no-family-content">
+                            <div className="no-family-icon">👨‍👩‍👧‍👦</div>
+                            <h4>아직 가족에 참여하지 않았어요</h4>
+                            <p>초대 코드가 있다면 가족에 참여할 수 있어요</p>
+                            <button
+                                className="btn btn-primary"
+                                onClick={() => navigate('/join-family')}
+                            >
+                                <Users size={20} />
+                                초대 코드로 가족 참여하기
+                            </button>
+                        </div>
+                    </div>
+                )}
+
                 {/* Family Members */}
                 <div className="members-section">
                     <div className="members-header">

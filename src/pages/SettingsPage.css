@@ -84,6 +84,42 @@
     margin-bottom: var(--space-md);
 }
 
+/* No Family Card */
+.no-family-card {
+    text-align: center;
+    padding: var(--space-xl) var(--space-md);
+}
+
+.no-family-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.no-family-icon {
+    font-size: 48px;
+    margin-bottom: var(--space-xs);
+}
+
+.no-family-content h4 {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.no-family-content p {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-sm);
+}
+
+.no-family-content .btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
 .family-header {
     display: flex;
     align-items: center;
