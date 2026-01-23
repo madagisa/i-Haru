@@ -29,7 +29,8 @@ function SchedulePage() {
     const [editingSchedule, setEditingSchedule] = useState(null)
 
     const isParent = user?.role === 'parent'
-    const childFilter = isParent ? selectedChildId : user?.id
+    // For parents, filter by selected child. For children, no client-side filtering needed (API handles it)
+    const childFilter = isParent ? selectedChildId : null
 
     useEffect(() => {
         if (user?.familyId) {
