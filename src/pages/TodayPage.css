@@ -358,11 +358,13 @@
 
 .message-text {
     font-size: 1.1rem;
-    line-height: 1.5;
-    color: var(--text-secondary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    /* Match schedule title behavior (allow wrapping) */
+    /* white-space: nowrap; */
+    /* overflow: hidden; */
+    /* text-overflow: ellipsis; */
 }
 
 /* Section Add Button */

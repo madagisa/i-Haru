@@ -236,16 +236,7 @@ function TodayPage() {
                                 key={prep.id}
                                 className={`prep-card ${isUrgent(prep.dueDate) ? 'urgent' : ''}`}
                             >
-                                <button
-                                    className="prep-check"
-                                    onClick={() => toggleCompletion(prep.id)}
-                                >
-                                    {prep.isCompleted ? (
-                                        <CheckCircle2 size={24} className="check-done" />
-                                    ) : (
-                                        <div className="check-empty" />
-                                    )}
-                                </button>
+
                                 <div className="prep-info">
                                     <h4 className="prep-title">{prep.title}</h4>
                                     {prep.description && (
