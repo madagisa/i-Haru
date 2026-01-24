@@ -224,7 +224,7 @@
     font-size: var(--font-size-xs);
     padding: 6px 14px;
     border-radius: var(--radius-full);
-    background: var(--color-primary);
+    background: var(--color-success);
     color: var(--text-inverse);
     font-weight: 600;
     transition: all var(--transition-fast);
@@ -247,7 +247,7 @@
 }
 
 .btn-complete:hover:not(.completed) {
-    background: var(--color-primary-dark);
+    background: #00a382;
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
