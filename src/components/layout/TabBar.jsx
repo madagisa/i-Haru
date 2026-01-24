@@ -5,7 +5,7 @@ import './TabBar.css'
 const tabs = [
     { path: '/', icon: Home, label: '오늘' },
     { path: '/schedule', icon: Calendar, label: '일정' },
-    { path: '/prep', icon: Package, label: '준비물' },
+    { path: '/prep', icon: Package, label: '준비물/과제' },
     { path: '/settings', icon: Settings, label: '설정' }
 ]
 

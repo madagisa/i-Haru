@@ -357,7 +357,8 @@
 }
 
 .message-text {
-    font-size: 0.95rem;
+    font-size: 1.1rem;
+    line-height: 1.5;
     color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;

@@ -218,7 +218,7 @@ function TodayPage() {
                 <div className="section-header">
                     <h3 className="section-title">
                         <Package size={20} />
-                        준비물/시험/과제
+                        준비물/과제
                     </h3>
                     <a href="/prep" className="section-link">
                         전체보기 <ChevronRight size={16} />
