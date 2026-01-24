@@ -239,7 +239,12 @@ function PrepPage() {
                                         className={`btn-complete ${prep.isCompleted ? 'completed' : ''}`}
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            toggleCompletion(prep.id);
+                                            const message = prep.isCompleted
+                                                ? '완료를 취소하시겠습니까?'
+                                                : '준비물을 완료하시겠습니까?';
+                                            if (confirm(message)) {
+                                                toggleCompletion(prep.id);
+                                            }
                                         }}
                                     >
                                         {prep.isCompleted ? '완료 취소' : '완료하기'}
