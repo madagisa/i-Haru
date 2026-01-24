@@ -304,3 +304,14 @@
 .modal-actions .btn-ghost {
     color: var(--color-error);
 }
+
+/* Time Selector overrides */
+.time-selector {
+    display: flex;
+    gap: 8px;
+}
+
+.time-select {
+    flex: 1;
+    min-width: 0;
+}

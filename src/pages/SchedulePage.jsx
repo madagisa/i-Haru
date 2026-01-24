@@ -365,21 +365,69 @@ function SchedulePage() {
                         <div className="form-row time-row">
                             <div className="input-group">
                                 <label className="input-label">시작 시간</label>
-                                <input
-                                    type="time"
-                                    className="input"
-                                    value={formData.startTime}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, startTime: e.target.value }))}
-                                />
+                                <div className="time-selector">
+                                    <select
+                                        className="input time-select"
+                                        value={formData.startTime ? formData.startTime.split(':')[0] : '09'}
+                                        onChange={(e) => {
+                                            const hour = e.target.value
+                                            const minute = formData.startTime ? formData.startTime.split(':')[1] : '00'
+                                            setFormData(prev => ({ ...prev, startTime: `${hour}:${minute}` }))
+                                        }}
+                                    >
+                                        {Array.from({ length: 24 }).map((_, i) => {
+                                            const hour = i.toString().padStart(2, '0')
+                                            return <option key={hour} value={hour}>{hour}시</option>
+                                        })}
+                                    </select>
+                                    <select
+                                        className="input time-select"
+                                        value={formData.startTime ? formData.startTime.split(':')[1] : '00'}
+                                        onChange={(e) => {
+                                            const hour = formData.startTime ? formData.startTime.split(':')[0] : '09'
+                                            const minute = e.target.value
+                                            setFormData(prev => ({ ...prev, startTime: `${hour}:${minute}` }))
+                                        }}
+                                    >
+                                        {Array.from({ length: 12 }).map((_, i) => {
+                                            const minute = (i * 5).toString().padStart(2, '0')
+                                            return <option key={minute} value={minute}>{minute}분</option>
+                                        })}
+                                    </select>
+                                </div>
                             </div>
                             <div className="input-group">
                                 <label className="input-label">종료 시간</label>
-                                <input
-                                    type="time"
-                                    className="input"
-                                    value={formData.endTime}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, endTime: e.target.value }))}
-                                />
+                                <div className="time-selector">
+                                    <select
+                                        className="input time-select"
+                                        value={formData.endTime ? formData.endTime.split(':')[0] : '10'}
+                                        onChange={(e) => {
+                                            const hour = e.target.value
+                                            const minute = formData.endTime ? formData.endTime.split(':')[1] : '00'
+                                            setFormData(prev => ({ ...prev, endTime: `${hour}:${minute}` }))
+                                        }}
+                                    >
+                                        {Array.from({ length: 24 }).map((_, i) => {
+                                            const hour = i.toString().padStart(2, '0')
+                                            return <option key={hour} value={hour}>{hour}시</option>
+                                        })}
+                                    </select>
+                                    <select
+                                        className="input time-select"
+                                        value={formData.endTime ? formData.endTime.split(':')[1] : '00'}
+                                        onChange={(e) => {
+                                            const hour = formData.endTime ? formData.endTime.split(':')[0] : '10'
+                                            const minute = e.target.value
+                                            setFormData(prev => ({ ...prev, endTime: `${hour}:${minute}` }))
+                                        }}
+                                    >
+                                        {Array.from({ length: 12 }).map((_, i) => {
+                                            const minute = (i * 5).toString().padStart(2, '0')
+                                            return <option key={minute} value={minute}>{minute}분</option>
+                                        })}
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     )}
