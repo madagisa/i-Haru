@@ -26,7 +26,7 @@ import './TodayPage.css'
 function TodayPage() {
     const { user } = useAuthStore()
     const { children, selectedChildId, loadFamily } = useFamilyStore()
-    const { getTodaySchedules, loadSchedules } = useScheduleStore()
+    const { getTodaySchedules, loadSchedules, getSchedulesForDate } = useScheduleStore()
     const { getPendingPreparations, getDday, isUrgent, toggleCompletion, loadPreparations } = usePrepStore()
     const { getRecentMessages, sendMessage, loadMessages, deleteMessage } = useMessageStore()
 
