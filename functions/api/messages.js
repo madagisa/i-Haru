@@ -139,6 +139,15 @@ export async function onRequestDelete(context) {
             return errorResponse('메시지를 찾을 수 없습니다.', 404);
         }
 
+        // Get user info to verify family membership
+        const user = await env.DB.prepare(
+            'SELECT family_id FROM users WHERE id = ?'
+        ).bind(tokenData.userId).first();
+
+        if (!user || !user.family_id) {
+            return errorResponse('사용자 정보를 찾을 수 없습니다.', 404);
+        }
+
         // Check if message belongs to user's family
         if (message.family_id !== user.family_id) {
             return errorResponse('권한이 없습니다.', 403);
