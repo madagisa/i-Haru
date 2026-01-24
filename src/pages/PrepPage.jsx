@@ -200,17 +200,6 @@ function PrepPage() {
                             key={prep.id}
                             className={`prep-card ${prep.isCompleted ? 'completed' : ''} ${isUrgent(prep.dueDate) && !prep.isCompleted ? 'urgent' : ''}`}
                         >
-                            <button
-                                className="prep-check-btn"
-                                onClick={() => toggleCompletion(prep.id)}
-                            >
-                                {prep.isCompleted ? (
-                                    <CheckCircle2 size={28} className="check-icon done" />
-                                ) : (
-                                    <Circle size={28} className="check-icon" />
-                                )}
-                            </button>
-
                             <div className="prep-content" onClick={() => openEditModal(prep)}>
                                 <div className="prep-main">
                                     <h4 className={`prep-title-text ${prep.isCompleted ? 'strikethrough' : ''}`}>
@@ -234,16 +223,27 @@ function PrepPage() {
                                     </div>
                                 </div>
 
-                                <div className="prep-dday-section">
-                                    {!prep.isCompleted && (isUrgent(prep.dueDate) || isOverdue(prep.dueDate)) && (
-                                        <AlertCircle size={16} className="alert-icon" />
-                                    )}
-                                    <span className={`dday-badge ${isUrgent(prep.dueDate) && !prep.isCompleted ? 'urgent' : ''} ${isOverdue(prep.dueDate) && !prep.isCompleted ? 'overdue' : ''}`}>
-                                        {getDday(prep.dueDate)}
-                                    </span>
-                                    <span className="due-date">
-                                        {format(new Date(prep.dueDate), 'M/d', { locale: ko })}
-                                    </span>
+                                <div className="prep-right-section">
+                                    <div className="prep-dday-section">
+                                        {!prep.isCompleted && (isUrgent(prep.dueDate) || isOverdue(prep.dueDate)) && (
+                                            <AlertCircle size={16} className="alert-icon" />
+                                        )}
+                                        <span className={`dday-badge ${isUrgent(prep.dueDate) && !prep.isCompleted ? 'urgent' : ''} ${isOverdue(prep.dueDate) && !prep.isCompleted ? 'overdue' : ''}`}>
+                                            {getDday(prep.dueDate)}
+                                        </span>
+                                        <span className="due-date">
+                                            {format(new Date(prep.dueDate), 'M/d', { locale: ko })}
+                                        </span>
+                                    </div>
+                                    <button
+                                        className={`btn-complete ${prep.isCompleted ? 'completed' : ''}`}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            toggleCompletion(prep.id);
+                                        }}
+                                    >
+                                        {prep.isCompleted ? '완료 취소' : '완료하기'}
+                                    </button>
                                 </div>
                             </div>
                         </div>
