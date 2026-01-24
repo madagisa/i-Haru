@@ -63,6 +63,11 @@ export const useFamilyStore = create((set, get) => ({
                         children: demoChildren,
                         isLoading: false
                     });
+
+                    // Sync auth store (simulated)
+                    const { updateProfile } = await import('./authStore').then(m => m.useAuthStore.getState());
+                    updateProfile({ familyId: demoFamily.id });
+
                     return { success: true };
                 }
                 throw new Error('유효하지 않은 초대 코드입니다.');
@@ -75,6 +80,21 @@ export const useFamilyStore = create((set, get) => ({
                 children: response.children || [],
                 isLoading: false
             });
+
+            // Update auth store with new family info
+            // This is crucial for the UI to update immediately without re-login
+            const { updateProfile } = await import('./authStore').then(m => m.useAuthStore.getState());
+
+            const updates = { familyId: response.family.id };
+            if (response.childProfile?.color) {
+                updates.color = response.childProfile.color;
+            }
+            if (response.childProfile?.name) { // Ensure name is synced if it was updated
+                updates.name = response.childProfile.name;
+            }
+
+            updateProfile(updates);
+
             return { success: true };
         } catch (error) {
             set({ error: error.message, isLoading: false });

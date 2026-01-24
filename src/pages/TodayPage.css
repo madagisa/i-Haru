@@ -21,7 +21,33 @@
 .hero-date {
     font-size: var(--font-size-xl);
     font-weight: 700;
+    margin: 0;
+    text-align: center;
+    flex: 1;
+}
+
+.hero-date-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
     margin-bottom: var(--space-md);
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--text-inverse);
+    transition: all var(--transition-fast);
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .hero-summary {
@@ -130,14 +156,16 @@
 }
 
 .schedule-title {
-    font-size: var(--font-size-md);
+    font-size: 1.1rem;
+    /* Slightly larger */
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 2px;
 }
 
 .schedule-desc {
-    font-size: var(--font-size-sm);
+    font-size: 0.95rem;
+    /* Increased from sm */
     color: var(--text-secondary);
     margin-bottom: var(--space-xs);
 }
@@ -212,13 +240,23 @@
 }
 
 .prep-title {
-    font-size: var(--font-size-md);
+    font-size: 1.1rem;
     font-weight: 600;
     color: var(--text-primary);
 }
 
 .prep-desc {
-    font-size: var(--font-size-sm);
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ... skipped prep-dday ... */
+
+.message-text {
+    font-size: 0.95rem;
     color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;
@@ -319,7 +357,7 @@
 }
 
 .message-text {
-    font-size: var(--font-size-sm);
+    font-size: 0.95rem;
     color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;

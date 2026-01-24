@@ -139,10 +139,17 @@ export async function onRequestDelete(context) {
             return errorResponse('메시지를 찾을 수 없습니다.', 404);
         }
 
+        // Check if message belongs to user's family
+        if (message.family_id !== user.family_id) {
+            return errorResponse('권한이 없습니다.', 403);
+        }
+
+        /*
         // Check if user is the sender (allowing only sender to delete for now)
         if (message.from_user_id !== tokenData.userId) {
             return errorResponse('자신이 보낸 메시지만 삭제할 수 있습니다.', 403);
         }
+        */
 
         await env.DB.prepare(
             'DELETE FROM messages WHERE id = ?'

@@ -11,6 +11,7 @@ import {
     Package,
     MessageCircle,
     ChevronRight,
+    ChevronLeft,
     CalendarDays,
     CheckCircle2,
     AlertCircle,
@@ -31,6 +32,15 @@ function TodayPage() {
 
     const [isMessageModalOpen, setIsMessageModalOpen] = useState(false)
     const [messageText, setMessageText] = useState('')
+    const [selectedDate, setSelectedDate] = useState(new Date())
+
+    const handlePrevDay = () => {
+        setSelectedDate(prev => new Date(prev.setDate(prev.getDate() - 1)))
+    }
+
+    const handleNextDay = () => {
+        setSelectedDate(prev => new Date(prev.setDate(prev.getDate() + 1)))
+    }
 
     useEffect(() => {
         if (user?.familyId) {
@@ -66,8 +76,8 @@ function TodayPage() {
     // For parents, filter by selected child. For children, no client-side filtering needed (API handles it)
     const childFilter = isParent ? selectedChildId : null
 
-    // Get today's schedules
-    const todaySchedules = getTodaySchedules({
+    // Get schedules for selected date
+    const todaySchedules = getSchedulesForDate(selectedDate, {
         childId: childFilter,
         includeFamily: true
     })
@@ -120,9 +130,17 @@ function TodayPage() {
             <section className="today-hero">
                 <div className="hero-content">
                     <p className="hero-greeting">{greeting}, {user?.name}님! 👋</p>
-                    <h2 className="hero-date">
-                        {format(today, 'M월 d일 EEEE', { locale: ko })}
-                    </h2>
+                    <div className="hero-date-nav">
+                        <button className="nav-btn" onClick={handlePrevDay}>
+                            <ChevronLeft size={24} />
+                        </button>
+                        <h2 className="hero-date">
+                            {format(selectedDate, 'M월 d일 EEEE', { locale: ko })}
+                        </h2>
+                        <button className="nav-btn" onClick={handleNextDay}>
+                            <ChevronRight size={24} />
+                        </button>
+                    </div>
                 </div>
                 <div className="hero-summary">
                     <div className="summary-item">
@@ -141,7 +159,7 @@ function TodayPage() {
                 <div className="section-header">
                     <h3 className="section-title">
                         <Clock size={20} />
-                        오늘의 일정
+                        {format(selectedDate, 'M월 d일')} 일정
                     </h3>
                     <a href="/schedule" className="section-link">
                         전체보기 <ChevronRight size={16} />
@@ -150,7 +168,7 @@ function TodayPage() {
 
                 {todaySchedules.length === 0 ? (
                     <div className="empty-card">
-                        <p>오늘 예정된 일정이 없어요 🎉</p>
+                        <p>이 날은 예정된 일정이 없어요 🎉</p>
                     </div>
                 ) : (
                     <div className="schedule-list">
@@ -200,7 +218,7 @@ function TodayPage() {
                 <div className="section-header">
                     <h3 className="section-title">
                         <Package size={20} />
-                        준비물
+                        준비물/시험/과제
                     </h3>
                     <a href="/prep" className="section-link">
                         전체보기 <ChevronRight size={16} />
@@ -292,14 +310,12 @@ function TodayPage() {
                                             <span className="message-time">
                                                 {format(new Date(msg.createdAt), 'a h:mm', { locale: ko })}
                                             </span>
-                                            {msg.fromUserId === user?.id && (
-                                                <button
-                                                    className="message-delete-btn"
-                                                    onClick={() => handleDeleteMessage(msg.id)}
-                                                >
-                                                    <Trash2 size={14} />
-                                                </button>
-                                            )}
+                                            <button
+                                                className="message-delete-btn"
+                                                onClick={() => handleDeleteMessage(msg.id)}
+                                            >
+                                                <Trash2 size={14} />
+                                            </button>
                                         </div>
                                     </div>
                                     <p className="message-text">{msg.content}</p>

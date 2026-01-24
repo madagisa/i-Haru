@@ -150,7 +150,7 @@ function PrepPage() {
             <div className="prep-header">
                 <h2 className="prep-title">
                     <Package size={24} />
-                    준비물
+                    준비물/과제
                 </h2>
                 <div className="prep-stats">
                     <span className="stat pending">{pendingCount}개 진행중</span>

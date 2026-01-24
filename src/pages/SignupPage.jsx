@@ -14,7 +14,8 @@ function SignupPage() {
         password: '',
         confirmPassword: '',
         role: 'parent',
-        createNewFamily: true  // 부모: 새 가족 만들기(true) or 기존 가족 참여(false)
+        createNewFamily: true,  // 부모: 새 가족 만들기(true) or 기존 가족 참여(false)
+        inviteCode: ''
     })
     const [showPassword, setShowPassword] = useState(false)
     const [validationError, setValidationError] = useState('')
@@ -44,7 +45,11 @@ function SignupPage() {
         const result = await signup(formData)
         if (result.success) {
             // 자녀 또는 기존 가족 참여를 선택한 부모는 초대코드 입력 페이지로 이동
-            if (formData.role === 'child' || !formData.createNewFamily) {
+            if (formData.inviteCode) {
+                // 초대 코드로 가입했으면 바로 메인으로
+                navigate('/')
+            } else if (formData.role === 'child' || !formData.createNewFamily) {
+                // 초대 코드 없이 가입한 경우에만 연결 페이지로
                 navigate('/join-family')
             } else {
                 navigate('/')
@@ -175,11 +180,43 @@ function SignupPage() {
                                     👨‍👩‍👧‍👦 기존 가족 참여
                                 </button>
                             </div>
+
+
+                            {/* 초대 코드 입력 필드 (기존 가족 참여 선택 시) */}
                             {!formData.createNewFamily && (
-                                <p className="input-hint" style={{ marginTop: '8px', fontSize: '12px', color: '#888' }}>
-                                    가입 후 초대 코드를 입력하여 가족에 참여할 수 있어요
-                                </p>
+                                <div className="invite-code-section" style={{ marginTop: '15px' }}>
+                                    <label className="input-label" htmlFor="inviteCode">초대 코드</label>
+                                    <input
+                                        id="inviteCode"
+                                        name="inviteCode"
+                                        type="text"
+                                        className="input"
+                                        placeholder="초대 코드를 입력하세요 (PRNT...)"
+                                        value={formData.inviteCode || ''}
+                                        onChange={handleChange}
+                                        style={{ textTransform: 'uppercase' }}
+                                    />
+                                    <p className="input-hint">가입 시 바로 가족에 참여됩니다</p>
+                                </div>
                             )}
+                        </div>
+                    )}
+
+                    {/* 자녀 선택 시 초대 코드 입력 */}
+                    {formData.role === 'child' && (
+                        <div className="input-group">
+                            <label className="input-label" htmlFor="inviteCode">자녀 초대 코드 (선택)</label>
+                            <input
+                                id="inviteCode"
+                                name="inviteCode"
+                                type="text"
+                                className="input"
+                                placeholder="부모님께 받은 코드를 입력하세요 (CHLD...)"
+                                value={formData.inviteCode || ''}
+                                onChange={handleChange}
+                                style={{ textTransform: 'uppercase' }}
+                            />
+                            <p className="input-hint">입력하면 바로 내 프로필과 연결됩니다</p>
                         </div>
                     )}
 
@@ -203,8 +240,8 @@ function SignupPage() {
                     <p>이미 계정이 있으신가요?</p>
                     <Link to="/login" className="auth-link">로그인</Link>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
 
