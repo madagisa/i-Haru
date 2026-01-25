@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { useAuthStore } from '../store/authStore'
 import {
     ChevronLeft,
     Smartphone,
@@ -8,20 +9,42 @@ import {
     Package,
     Lightbulb,
     Share,
-    MoreVertical
+    MoreVertical,
+    LogIn,
+    Copy
 } from 'lucide-react'
 import './HelpPage.css'
 
 function HelpPage() {
     const navigate = useNavigate()
+    const { user } = useAuthStore()
+
+    const handleShare = async () => {
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            alert('링크가 복사되었습니다! 카톡에 붙여넣어 보세요.');
+        } catch (err) {
+            console.error('Failed to copy mode', err);
+        }
+    }
 
     return (
         <div className="help-page">
             <header className="help-header">
-                <button className="btn btn-ghost" onClick={() => navigate(-1)}>
-                    <ChevronLeft size={24} />
+                {user ? (
+                    <button className="btn btn-ghost" onClick={() => navigate(-1)}>
+                        <ChevronLeft size={24} />
+                    </button>
+                ) : (
+                    <button className="btn btn-primary btn-sm" onClick={() => navigate('/login')}>
+                        <LogIn size={16} />
+                        앱 시작하기
+                    </button>
+                )}
+                <h2 className="help-title" style={{ flex: 1, textAlign: 'center' }}>사용 가이드</h2>
+                <button className="btn btn-ghost" onClick={handleShare}>
+                    <Share size={20} />
                 </button>
-                <h2 className="help-title">사용 가이드</h2>
             </header>
 
             <div className="help-intro">

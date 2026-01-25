@@ -79,8 +79,10 @@ function App() {
         <Route path="schedule" element={<SchedulePage />} />
         <Route path="prep" element={<PrepPage />} />
         <Route path="settings" element={<SettingsPage />} />
-        <Route path="help" element={<HelpPage />} />
       </Route>
+
+      {/* Publicly Accessible Help Page */}
+      <Route path="/help" element={<HelpPage />} />
 
       {/* Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />
