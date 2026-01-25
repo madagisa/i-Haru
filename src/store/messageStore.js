@@ -4,24 +4,16 @@ import { messagesApi } from '../api/client'
 // Demo mode flag
 const USE_DEMO = false;
 
-// Demo messages
-const DEMO_MESSAGES = [
-    {
-        id: 'msg_1',
-        familyId: 'family_demo_1',
-        fromUserId: 'user_parent_1',
-        fromUserName: '부모님',
-        toUserId: null,
-        content: '오늘 저녁 7시에 외식해요! 🍕',
-        isRead: false,
-        createdAt: new Date().toISOString()
-    }
-];
+// Helper to get local storage item
+const getStoredReadTime = () => {
+    return localStorage.getItem('haru-last-read-time') || new Date(0).toISOString();
+};
 
 export const useMessageStore = create((set, get) => ({
-    messages: USE_DEMO ? DEMO_MESSAGES : [],
+    messages: [],
     isLoading: false,
     error: null,
+    lastReadTime: getStoredReadTime(),
 
     // Load messages from API
     loadMessages: async () => {
@@ -47,12 +39,24 @@ export const useMessageStore = create((set, get) => ({
     },
 
     // Get unread messages count
+    // Logic: Count messages created AFTER lastReadTime
     getUnreadCount: (userId) => {
-        return get().messages.filter(msg =>
-            !msg.isRead &&
-            msg.fromUserId !== userId &&
-            (msg.toUserId === null || msg.toUserId === userId)
-        ).length
+        const { messages, lastReadTime } = get();
+        const lastReadCalls = new Date(lastReadTime).getTime();
+
+        return messages.filter(msg => {
+            // My messages are always read
+            if (msg.fromUserId === userId) return false;
+
+            // Only count if created AFTER my last read time
+            const msgTime = new Date(msg.createdAt).getTime();
+            const isNew = msgTime > lastReadCalls;
+
+            // Targeting me or public
+            const isRelevant = msg.toUserId === null || msg.toUserId === userId;
+
+            return isNew && isRelevant;
+        }).length
     },
 
     // Get recent messages (for today screen)
@@ -65,20 +69,6 @@ export const useMessageStore = create((set, get) => ({
         set({ isLoading: true });
 
         try {
-            if (USE_DEMO) {
-                const newMessage = {
-                    id: 'msg_' + Date.now(),
-                    ...messageData,
-                    isRead: false,
-                    createdAt: new Date().toISOString()
-                };
-                set(state => ({
-                    messages: [newMessage, ...state.messages],
-                    isLoading: false
-                }));
-                return { success: true, message: newMessage };
-            }
-
             const response = await messagesApi.send({
                 content: messageData.content,
                 toUserId: messageData.toUserId || null
@@ -102,14 +92,6 @@ export const useMessageStore = create((set, get) => ({
     deleteMessage: async (messageId) => {
         set({ isLoading: true });
         try {
-            if (USE_DEMO) {
-                set(state => ({
-                    messages: state.messages.filter(m => m.id !== messageId),
-                    isLoading: false
-                }));
-                return { success: true };
-            }
-
             await messagesApi.delete(messageId);
             set(state => ({
                 messages: state.messages.filter(m => m.id !== messageId),
@@ -123,25 +105,19 @@ export const useMessageStore = create((set, get) => ({
         }
     },
 
-    // Mark as read (local only for now)
-    markAsRead: async (messageId) => {
-        set(state => ({
-            messages: state.messages.map(m =>
-                m.id === messageId ? { ...m, isRead: true } : m
-            )
-        }));
+    // Mark as read (Update local timestamp)
+    markAsRead: async () => {
+        const now = new Date().toISOString();
+        localStorage.setItem('haru-last-read-time', now);
+        set({ lastReadTime: now });
         return { success: true };
     },
 
-    // Mark all as read (local only for now)
+    // Mark all as read (Same as markAsRead for timestamp logic)
     markAllAsRead: async (userId) => {
-        set(state => ({
-            messages: state.messages.map(m =>
-                (m.toUserId === null || m.toUserId === userId) && m.fromUserId !== userId
-                    ? { ...m, isRead: true }
-                    : m
-            )
-        }));
+        const now = new Date().toISOString();
+        localStorage.setItem('haru-last-read-time', now);
+        set({ lastReadTime: now });
         return { success: true };
     }
 }));
