@@ -161,8 +161,8 @@ export const usePrepStore = create((set, get) => ({
         return preps.filter(p => !p.isCompleted && get().isUrgent(p.dueDate));
     },
 
-    getDday: (dueDate) => {
-        const today = new Date();
+    getDday: (dueDate, baseDate = new Date()) => {
+        const today = new Date(baseDate);
         today.setHours(0, 0, 0, 0);
         const due = parseISO(dueDate);
         due.setHours(0, 0, 0, 0);

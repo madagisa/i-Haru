@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useAuthStore } from '../store/authStore'
 import { useFamilyStore } from '../store/familyStore'
 import { useScheduleStore } from '../store/scheduleStore'
@@ -34,6 +34,8 @@ function TodayPage() {
     const [messageText, setMessageText] = useState('')
     const [selectedDate, setSelectedDate] = useState(new Date())
 
+    const backgroundTimeRef = useRef(null)
+
     const handlePrevDay = () => {
         setSelectedDate(prev => new Date(prev.setDate(prev.getDate() - 1)))
     }
@@ -50,6 +52,31 @@ function TodayPage() {
             loadMessages()
         }
     }, [user?.familyId, loadFamily, loadSchedules, loadPreparations, loadMessages])
+
+    // Visibility change listener for date reset
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                // App went to background
+                backgroundTimeRef.current = Date.now()
+            } else {
+                // App came to foreground
+                if (backgroundTimeRef.current) {
+                    const elapsed = Date.now() - backgroundTimeRef.current
+                    // If more than 20 seconds passed, reset date to today
+                    if (elapsed > 20000) {
+                        setSelectedDate(new Date())
+                    }
+                    backgroundTimeRef.current = null
+                }
+            }
+        }
+
+        document.addEventListener('visibilitychange', handleVisibilityChange)
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange)
+        }
+    }, [])
 
     const handleSendMessage = async (e) => {
         e.preventDefault()
@@ -253,7 +280,7 @@ function TodayPage() {
                                 </div>
                                 <div className={`prep-dday ${isUrgent(prep.dueDate) ? 'urgent' : ''}`}>
                                     {isUrgent(prep.dueDate) && <AlertCircle size={14} />}
-                                    {getDday(prep.dueDate)}
+                                    {getDday(prep.dueDate, selectedDate)}
                                 </div>
                             </div>
                         ))}
