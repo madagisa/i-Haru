@@ -8,6 +8,7 @@ import ResetPasswordPage from './pages/ResetPasswordPage'
 import TodayPage from './pages/TodayPage'
 import SchedulePage from './pages/SchedulePage'
 import PrepPage from './pages/PrepPage'
+import HelpPage from './pages/HelpPage'
 import SettingsPage from './pages/SettingsPage'
 import JoinFamilyPage from './pages/JoinFamilyPage'
 
@@ -78,6 +79,7 @@ function App() {
         <Route path="schedule" element={<SchedulePage />} />
         <Route path="prep" element={<PrepPage />} />
         <Route path="settings" element={<SettingsPage />} />
+        <Route path="help" element={<HelpPage />} />
       </Route>
 
       {/* Fallback */}

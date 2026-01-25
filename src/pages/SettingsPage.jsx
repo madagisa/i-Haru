@@ -37,7 +37,7 @@ function SettingsPage() {
     // Modal states
     const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false)
     const [isDarkModeModalOpen, setIsDarkModeModalOpen] = useState(false)
-    const [isHelpModalOpen, setIsHelpModalOpen] = useState(false)
+    // Help modal state removed
 
     // Settings states
     const [notifications, setNotifications] = useState(() => {
@@ -115,10 +115,7 @@ function SettingsPage() {
     const handleDeleteAccount = async () => {
         const confirmMessage = "정말로 탈퇴하시겠습니까?\n모든 데이터(가족, 일정, 준비물, 공지사항)가 영구적으로 삭제됩니다.";
         if (confirm(confirmMessage)) {
-            // Assuming deleteAccount is available from useAuthStore, but line 31 destructuring doesn't include it.
-            // Checking previous edits, deleteAccount IS in authStore. need to add it to destructuring.
             const { deleteAccount } = useAuthStore.getState();
-            // Or better, update line 31. But since I'm rewriting the whole file, I will update line 31.
 
             const result = await deleteAccount();
             if (result.success) {
@@ -309,11 +306,11 @@ function SettingsPage() {
                         <ChevronRight size={20} className="settings-item-arrow" />
                     </button>
 
-                    <button className="settings-item" onClick={() => setIsHelpModalOpen(true)}>
+                    <button className="settings-item" onClick={() => navigate('/help')}>
                         <div className="settings-item-icon">
                             <HelpCircle size={20} />
                         </div>
-                        <span className="settings-item-label">도움말</span>
+                        <span className="settings-item-label">사용 가이드</span>
                         <ChevronRight size={20} className="settings-item-arrow" />
                     </button>
                 </div>
@@ -479,39 +476,6 @@ function SettingsPage() {
                         </div>
                         <span>자동</span>
                     </button>
-                </div>
-            </Modal>
-
-            {/* Help Modal */}
-            <Modal
-                isOpen={isHelpModalOpen}
-                onClose={() => setIsHelpModalOpen(false)}
-                title="도움말"
-            >
-                <div className="help-content">
-                    <div className="help-section">
-                        <h4>📅 일정 관리</h4>
-                        <p>캘린더에서 날짜를 선택하고 + 버튼을 눌러 일정을 추가할 수 있습니다. 반복 일정도 설정할 수 있어요.</p>
-                    </div>
-                    <div className="help-section">
-                        <h4>📦 준비물 관리</h4>
-                        <p>준비물 탭에서 필요한 물건을 등록하고, 완료 시 체크할 수 있습니다. D-Day가 다가오면 알림을 받아요.</p>
-                    </div>
-                    <div className="help-section">
-                        <h4>👨‍👩‍👧 가족 초대</h4>
-                        <p>설정에서 초대 코드를 복사하여 가족에게 공유하세요. 자녀가 회원가입 후 코드를 입력하면 가족에 참여합니다.</p>
-                    </div>
-                    <div className="help-section">
-                        <h4>📢 가족 공지사항</h4>
-                        <p>오늘 페이지에서 가족 공지사항을 등록하고 확인할 수 있습니다.</p>
-                    </div>
-                    <div className="help-section">
-                        <h4>🌙 다크 모드</h4>
-                        <p>설정에서 라이트/다크/자동 모드를 선택할 수 있습니다. 자동 모드는 시스템 설정을 따릅니다.</p>
-                    </div>
-                    <div className="help-contact">
-                        <p>문의: support@i-haru.com</p>
-                    </div>
                 </div>
             </Modal>
         </div>
