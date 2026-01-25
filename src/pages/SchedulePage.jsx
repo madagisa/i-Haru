@@ -110,6 +110,11 @@ function SchedulePage() {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
+        if (isParent && !formData.childId) {
+            alert('자녀를 선택해주세요.')
+            return
+        }
+
         const scheduleData = {
             familyId: user.familyId,
             childId: formData.childId,

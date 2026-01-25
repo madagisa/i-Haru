@@ -32,7 +32,16 @@ export async function onRequestGet(context) {
         const date = url.searchParams.get('date');
         const childId = url.searchParams.get('childId');
 
-        let query = 'SELECT * FROM schedules WHERE family_id = ?';
+        // Optimized query using LEFT JOIN to fetch schedules and recurrences in one go
+        let query = `
+            SELECT s.*, 
+                   r.frequency as recurrence_frequency, 
+                   r.days_of_week as recurrence_days, 
+                   r.end_date as recurrence_end_date
+            FROM schedules s
+            LEFT JOIN recurrences r ON s.id = r.schedule_id
+            WHERE s.family_id = ?
+        `;
         const params = [user.family_id];
 
         // Child users can see schedules for their linked profile AND family-wide ones
@@ -44,53 +53,53 @@ export async function onRequestGet(context) {
 
             if (childProfile) {
                 // Include both linked profile's schedules and family-wide schedules
-                query += ' AND (child_id = ? OR child_id IS NULL)';
+                query += ' AND (s.child_id = ? OR s.child_id IS NULL)';
                 params.push(childProfile.id);
             } else {
                 // No profile linked - just show family-wide schedules
-                query += ' AND child_id IS NULL';
+                query += ' AND s.child_id IS NULL';
             }
         } else if (childId) {
-            query += ' AND (child_id = ? OR child_id IS NULL)';
+            query += ' AND (s.child_id = ? OR s.child_id IS NULL)';
             params.push(childId);
         }
 
         if (date) {
-            query += ' AND start_date = ?';
+            query += ' AND s.start_date = ?';
             params.push(date);
         }
 
-        query += ' ORDER BY start_date, start_time';
+        query += ' ORDER BY s.start_date, s.start_time';
 
         const stmt = env.DB.prepare(query);
         const result = await stmt.bind(...params).all();
 
-        // Get recurrences for each schedule
-        const schedules = await Promise.all((result.results || []).map(async (schedule) => {
-            const recurrence = await env.DB.prepare(
-                'SELECT * FROM recurrences WHERE schedule_id = ?'
-            ).bind(schedule.id).first();
+        const schedules = (result.results || []).map(row => {
+            let recurrence = null;
+            if (row.recurrence_frequency) {
+                recurrence = {
+                    frequency: row.recurrence_frequency,
+                    daysOfWeek: row.recurrence_days ? JSON.parse(row.recurrence_days) : [],
+                    endDate: row.recurrence_end_date
+                };
+            }
 
             return {
-                id: schedule.id,
-                familyId: schedule.family_id,
-                childId: schedule.child_id,
-                title: schedule.title,
-                description: schedule.description,
-                category: schedule.category,
-                startDate: schedule.start_date,
-                startTime: schedule.start_time,
-                endTime: schedule.end_time,
-                isAllDay: schedule.is_all_day,
-                color: schedule.color,
-                createdBy: schedule.created_by,
-                recurrence: recurrence ? {
-                    frequency: recurrence.frequency,
-                    daysOfWeek: recurrence.days_of_week ? JSON.parse(recurrence.days_of_week) : [],
-                    endDate: recurrence.end_date
-                } : null
+                id: row.id,
+                familyId: row.family_id,
+                childId: row.child_id,
+                title: row.title,
+                description: row.description,
+                category: row.category,
+                startDate: row.start_date,
+                startTime: row.start_time,
+                endTime: row.end_time,
+                isAllDay: row.is_all_day,
+                color: row.color,
+                createdBy: row.created_by,
+                recurrence
             };
-        }));
+        });
 
         return successResponse({ schedules });
     } catch (error) {
