@@ -168,26 +168,7 @@ export async function onRequestPost(context) {
             ).run();
         }
 
-        // --- [Notification Logic Start] ---
-        // Create a system notification message
-        try {
-            const messageId = generateId('msg');
-            const notificationContent = `📅 새로운 일정이 등록되었어요: ${title}`;
 
-            await env.DB.prepare(`
-                INSERT INTO messages (id, family_id, from_user_id, to_user_id, content, is_read, created_at)
-                VALUES (?, ?, ?, NULL, ?, 0, datetime('now'))
-            `).bind(
-                messageId,
-                user.family_id,
-                tokenData.userId, // Sender is the user who created the schedule
-                notificationContent
-            ).run();
-        } catch (notifyError) {
-            // Don't fail the request if notification fails, just log it
-            console.error('Failed to create system notification for schedule:', notifyError);
-        }
-        // --- [Notification Logic End] ---
 
         return successResponse({
             schedule: {

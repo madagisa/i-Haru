@@ -11,6 +11,8 @@ import PrepPage from './pages/PrepPage'
 import HelpPage from './pages/HelpPage'
 import SettingsPage from './pages/SettingsPage'
 import JoinFamilyPage from './pages/JoinFamilyPage'
+import VersionManager from './components/common/VersionManager'
+
 
 // Protected Route Component
 function ProtectedRoute({ children }) {
@@ -52,41 +54,44 @@ function PublicRoute({ children }) {
 
 function App() {
   return (
-    <Routes>
-      {/* Public Routes */}
-      <Route path="/login" element={
-        <PublicRoute>
-          <LoginPage />
-        </PublicRoute>
-      } />
-      <Route path="/signup" element={
-        <PublicRoute>
-          <SignupPage />
-        </PublicRoute>
-      } />
-      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-      <Route path="/reset-password" element={<ResetPasswordPage />} />
-      <Route path="/join/:inviteCode" element={<JoinFamilyPage />} />
-      <Route path="/join-family" element={<JoinFamilyPage />} />
+    <>
+      <VersionManager />
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/login" element={
+          <PublicRoute>
+            <LoginPage />
+          </PublicRoute>
+        } />
+        <Route path="/signup" element={
+          <PublicRoute>
+            <SignupPage />
+          </PublicRoute>
+        } />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/join/:inviteCode" element={<JoinFamilyPage />} />
+        <Route path="/join-family" element={<JoinFamilyPage />} />
 
-      {/* Protected Routes with Layout */}
-      <Route path="/" element={
-        <ProtectedRoute>
-          <Layout />
-        </ProtectedRoute>
-      }>
-        <Route index element={<TodayPage />} />
-        <Route path="schedule" element={<SchedulePage />} />
-        <Route path="prep" element={<PrepPage />} />
-        <Route path="settings" element={<SettingsPage />} />
-      </Route>
+        {/* Protected Routes with Layout */}
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Layout />
+          </ProtectedRoute>
+        }>
+          <Route index element={<TodayPage />} />
+          <Route path="schedule" element={<SchedulePage />} />
+          <Route path="prep" element={<PrepPage />} />
+          <Route path="settings" element={<SettingsPage />} />
+        </Route>
 
-      {/* Publicly Accessible Help Page */}
-      <Route path="/help" element={<HelpPage />} />
+        {/* Publicly Accessible Help Page */}
+        <Route path="/help" element={<HelpPage />} />
 
-      {/* Fallback */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
   )
 }
 

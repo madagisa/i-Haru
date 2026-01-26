@@ -123,25 +123,7 @@ export async function onRequestPost(context) {
             tokenData.userId
         ).run();
 
-        // --- [Notification Logic Start] ---
-        // Create a system notification message
-        try {
-            const messageId = generateId('msg');
-            const notificationContent = `🎒 준비물이 추가되었어요: ${title}`;
 
-            await env.DB.prepare(`
-                INSERT INTO messages (id, family_id, from_user_id, to_user_id, content, is_read, created_at)
-                VALUES (?, ?, ?, NULL, ?, 0, datetime('now'))
-            `).bind(
-                messageId,
-                user.family_id,
-                tokenData.userId,
-                notificationContent
-            ).run();
-        } catch (notifyError) {
-            console.error('Failed to create system notification for preparation:', notifyError);
-        }
-        // --- [Notification Logic End] ---
 
         return successResponse({
             preparation: { id: prepId, title, dueDate }

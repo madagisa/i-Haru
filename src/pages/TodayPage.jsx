@@ -109,14 +109,14 @@ function TodayPage() {
         includeFamily: true
     })
 
-    // Get pending preparations (urgent ones first)
+
     const pendingPreps = getPendingPreparations({
         childId: childFilter,
-        limit: 5
+        // Limit removed to show all
     })
 
-    // Get recent messages
-    const recentMessages = getRecentMessages(user?.id, 3)
+    // Get recent messages (unlimited)
+    const recentMessages = getRecentMessages(user?.id, 100)
 
     const today = new Date()
     const greeting = getGreeting()
