@@ -44,25 +44,24 @@ export async function onRequestGet(context) {
         `;
         const params = [user.family_id];
 
-        // Child users can see schedules for their linked profile AND family-wide ones
-        if (user.role === 'child') {
-            // Find the child profile linked to this user
+        // Check if a specific child filter is requested (allowed for both parent and child)
+        if (childId) {
+            query += ' AND (s.child_id = ? OR s.child_id IS NULL)';
+            params.push(childId);
+        } else if (user.role === 'child') {
+            // Child user with NO filter -> Default to their own linked profile
             const childProfile = await env.DB.prepare(
                 'SELECT id FROM child_profiles WHERE linked_user_id = ?'
             ).bind(tokenData.userId).first();
 
             if (childProfile) {
-                // Include both linked profile's schedules and family-wide schedules
                 query += ' AND (s.child_id = ? OR s.child_id IS NULL)';
                 params.push(childProfile.id);
             } else {
-                // No profile linked - just show family-wide schedules
                 query += ' AND s.child_id IS NULL';
             }
-        } else if (childId) {
-            query += ' AND (s.child_id = ? OR s.child_id IS NULL)';
-            params.push(childId);
         }
+        // If parent and no childId, show all (no extra filter needed beyond family_id)
 
         if (date) {
             query += ' AND s.start_date = ?';

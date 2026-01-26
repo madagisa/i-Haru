@@ -34,25 +34,24 @@ export async function onRequestGet(context) {
         let query = 'SELECT * FROM preparations WHERE family_id = ?';
         const params = [user.family_id];
 
-        // Child users can see preparations for their linked profile AND family-wide ones
-        if (user.role === 'child') {
-            // Find the child profile linked to this user
+        // Check if specific child filter is requested
+        if (childId) {
+            query += ' AND child_id = ?';
+            params.push(childId);
+        } else if (user.role === 'child') {
+            // Child user with NO filter -> Default to their own linked profile
             const childProfile = await env.DB.prepare(
                 'SELECT id FROM child_profiles WHERE linked_user_id = ?'
             ).bind(tokenData.userId).first();
 
             if (childProfile) {
-                // Include both linked profile's preparations and family-wide ones
                 query += ' AND (child_id = ? OR child_id IS NULL)';
                 params.push(childProfile.id);
             } else {
-                // No profile linked - just show family-wide preparations
                 query += ' AND child_id IS NULL';
             }
-        } else if (childId) {
-            query += ' AND child_id = ?';
-            params.push(childId);
         }
+        // If parent and no childId, show all
 
         if (!showCompleted) {
             query += ' AND is_completed = 0';

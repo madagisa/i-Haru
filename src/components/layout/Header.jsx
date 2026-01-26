@@ -44,7 +44,7 @@ function Header() {
                 </div>
 
                 <div className="header-center">
-                    {isParent && children.length > 0 && (
+                    {children.length > 0 && (
                         <div className="child-filter">
                             <select
                                 className="child-filter-select"
